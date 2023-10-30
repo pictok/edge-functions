@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "deploy": "supabase functions deploy caption-to-sound"
+  },
+  "devDependencies": {
+    "supabase": "^1.106.1"
+  }
+}
