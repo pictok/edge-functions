@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
 
   const input = {
     prompt: caption,
-    duration: 3,
+    duration: 5,
     top_k: 250,
     top_p: 0,
     temperature: 1,
