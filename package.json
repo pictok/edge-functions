@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "deploy": "supabase functions deploy caption-to-sound"
+    "deploy:caption-sound": "supabase functions deploy caption-to-sound",
+    "deploy:convert-image": "supabase functions deploy convert-image-to-story"
   },
   "devDependencies": {
     "supabase": "^1.106.1"
