@@ -35,6 +35,7 @@ Deno.serve(async (req) => {
   return new Response(
     JSON.stringify({
       output: response.choices[0].message.content,
+      test: "test",
     }),
     {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
