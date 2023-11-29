@@ -4,6 +4,6 @@
     "deploy:convert-image": "supabase functions deploy convert-image-to-story"
   },
   "devDependencies": {
-    "supabase": "^1.106.1"
+    "supabase": "^1.112.0"
   }
 }

@@ -10,19 +10,18 @@ Deno.serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
   const { image } = await req.json();
-  const response = await openai.chat.completions.create({
+  //@ generating a narrative story
+  const storyResponse = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
-    max_tokens: 300,
+    max_tokens: 400,
 
     messages: [
       {
         role: "user",
-        //@ts-ignore
         content: [
           {
             type: "text",
-            text:
-              "Please identify all objects, discern the gender of any person present, recognize weather conditions, pinpoint the location if identifiable, and describe any observable motion within the image. Condense findings into a single, succinct sentence, avoiding the use of 'This image shows.'",
+            text: "You are an AI trained to describe images in a simple yet detailed manner, suitable for a first grader. Upon receiving an image, your task is to create a story about the image within 60 words. Remember to focus on the key elements in the image and describe them in a way that a first grader would understand. ",
           },
           {
             type: "image_url",
@@ -32,13 +31,29 @@ Deno.serve(async (req) => {
       },
     ],
   });
+
+  //@ generating a caption based on the previous story
+  const captionResponse = await openai.chat.completions.create({
+    model: "gpt-4",
+    max_tokens: 100,
+    temperature: 0.7,
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are an AI trained to identify the crucial keywords from a story. Your task is to describe the sounds that these keywords might have in real life. Combine these keywords and their corresponding sounds into a single sentence in the format ‘Keyword (Sound)’, where ‘Sound’ should be an onomatopoeic representation of the sound that the keyword makes.",
+      },
+      { role: "user", content: storyResponse.choices[0].message.content },
+    ],
+  });
+
   return new Response(
     JSON.stringify({
-      output: response.choices[0].message.content,
-      test: "test",
+      story: storyResponse.choices[0].message.content,
+      caption: captionResponse.choices[0].message.content,
     }),
     {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
-    },
+    }
   );
 });
